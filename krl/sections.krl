@@ -1,6 +1,6 @@
 ruleset sections {
   rule addSection {
-    select when section init
+    select when sections init
     pre {
       a = event:attrs{"line"}.split("\t")
 .klog("a")
