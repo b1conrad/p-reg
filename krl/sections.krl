@@ -2,7 +2,7 @@ ruleset sections {
   rule addSection {
     select when sections init
     pre {
-      a = event:attrs{"line"}.split("\t")
+      a = event:attrs{"line"}.split(chr(9))
 .klog("a")
       id = a.head()
 .klog("id")
