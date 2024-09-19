@@ -32,8 +32,6 @@ ruleset sections {
     if not already_exists then noop()
     fired {
       raise wrangler event "new_child_request" attributes {
-        "x": 950,
-        "y": 390,
         "co_id": meta:rid,
         "name": id,
         "limit": limit
