@@ -39,14 +39,14 @@ ruleset sections {
     }
   }
   rule installRulesetsInChild {
-    select when wrangler new_child_created
+    select when wrangler child_initialized
       where event:attrs{"co_id"} == meta:rid
     pre {
       name = event:attrs{"name"}
     }
     fired {
       ent:sections_by_id{name} := event:attrs.delete("co_id").delete("limit")
-.klog(name.encode())
+.klog(<<"#{name}">>)
     }
   }
 }
