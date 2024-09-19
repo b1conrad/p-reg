@@ -49,4 +49,11 @@ ruleset sections {
 .klog(<<"#{name}">>)
     }
   }
+  rule recognizeDeletion {
+    select when wrangler child_deleted
+    pre {
+      eci = event:attrs{"eci"}
+.klog("eci")
+    }
+  }
 }
