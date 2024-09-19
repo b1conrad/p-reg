@@ -3,13 +3,15 @@ ruleset sections {
     select when sections init
     pre {
       a = event:attrs{"line"}.split(chr(9))
-.klog("a")
       id = a.head()
-.klog("id")
       q = a[1]
-.klog("q")
-      sanity = ("\t" == chr(9))
-.klog("sanity")
+    }
+    if id && q then noop()
+    fired {
+      raise sections event "new_section" attributes {
+        "id": id,
+        "limit": q
+      }
     }
   }
 }
