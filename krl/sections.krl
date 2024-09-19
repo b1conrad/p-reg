@@ -1,5 +1,5 @@
 ruleset sections {
-  rule addSection {
+  rule initSection {
     select when sections init
     pre {
       a = event:attrs{"line"}.split(chr(9))
@@ -12,6 +12,34 @@ ruleset sections {
         "id": id,
         "limit": q
       }
+    }
+  }
+  rule addSection {
+    select when sections new_section
+      id re#.+#
+      limit re#\d+#
+      setting(id,limit)
+    pre {
+      already_exists = ent:sections_by_id.defaultsTo({}){id}
+    }
+    if not already_exists then noop()
+    fired {
+      raise wrangler event "new_child_request" attributes {
+        "co_id": meta:rid,
+        "name": id,
+        "limit": limit
+      }
+    }
+  }
+  rule installRulesetsInChild {
+    select when wrangler new_child_created
+      where event:attrs{"co_id"} == meta:rid
+    pre {
+      name = event:attrs{"name"}
+    }
+    fired {
+      ent:sections_by_id{name} := event:attrs
+.klog(name)
     }
   }
 }
