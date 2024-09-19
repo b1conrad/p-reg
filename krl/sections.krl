@@ -8,6 +8,8 @@ ruleset sections {
 .klog("id")
       q = a[1]
 .klog("q")
+      sanity = ("\t" == chr(9))
+.klog("sanity")
     }
   }
 }
