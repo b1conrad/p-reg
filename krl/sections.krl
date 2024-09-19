@@ -45,8 +45,8 @@ ruleset sections {
       name = event:attrs{"name"}
     }
     fired {
-      ent:sections_by_id{name} := event:attrs.delete("co_rid").delete("limit")
-.klog(name.as("String"))
+      ent:sections_by_id{name} := event:attrs.delete("co_id").delete("limit")
+.klog(name.encode())
     }
   }
 }
