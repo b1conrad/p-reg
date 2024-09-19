@@ -16,8 +16,8 @@ ruleset sections {
   }
   rule addSection {
     select when sections new_section
-      id re#.+#
-      limit re#\d+#
+      id re#(.+)#
+      limit re#(\d+)#
       setting(id,limit)
     pre {
       already_exists = ent:sections_by_id.defaultsTo({}){id}
