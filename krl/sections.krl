@@ -1,4 +1,11 @@
 ruleset sections {
+  rule initialize {
+    select when wrangler ruleset_installed where event:attrs{"rids"} >< meta:rid
+    if ent:sections_by_id.isnull() then noop()
+    fired {
+      ent:sections_by_id := {}
+    }
+  }
   rule initSection {
     select when sections init
     pre {
@@ -20,7 +27,7 @@ ruleset sections {
       limit re#(\d+)#
       setting(id,limit)
     pre {
-      already_exists = ent:sections_by_id.defaultsTo({}){id}
+      already_exists = ent:sections_by_id{id}
     }
     if not already_exists then noop()
     fired {
@@ -38,8 +45,8 @@ ruleset sections {
       name = event:attrs{"name"}
     }
     fired {
-      ent:sections_by_id{name} := event:attrs
-.klog(name)
+      ent:sections_by_id{name} := event:attrs.delete("co_rid").delete("limit")
+.klog(name.as("String"))
     }
   }
 }
