@@ -1,4 +1,12 @@
 ruleset sections {
+  global {
+    name_for_eci = function(eci){
+      ent:sections_by_id
+        .values()
+        .filter(function(m){m{"eci"}==eci})
+        {"name"}
+    }
+  }
   rule initialize {
     select when wrangler ruleset_installed where event:attrs{"rids"} >< meta:rid
     if ent:sections_by_id.isnull() then noop()
@@ -49,24 +57,24 @@ ruleset sections {
 .klog(<<"#{name}">>)
     }
   }
+  rule cleanup {
+    select when sections cleanup_requested
+    foreach ent:sections_by_id setting(m,id)
+    fired {
+      raise wrangler event "child_deletion_request" attributes m
+    }
+  }
   rule recognizeDeletion {
     select when wrangler child_deleted
     pre {
       m = event:attrs
 .klog("pico deleted")
       eci = event:attrs{"eci"}
-      id = event:attrs{"name"}
+      id = event:attrs{"name"} || name_for_eci(eci).klog("name")
     }
     if id then noop()
     fired {
       clear ent:sections_by_id{id}
-    }
-  }
-  rule cleanup {
-    select when sections cleanup_requested
-    foreach ent:sections_by_id setting(m,id)
-    fired {
-      raise wrangler event "child_deletion_request" attributes m
     }
   }
 }
