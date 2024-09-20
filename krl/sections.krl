@@ -56,6 +56,12 @@ ruleset sections {
 .klog("eci")
     }
   }
+  rule patch {
+    select when sections cleanup_requested
+    fired {
+      clear ent:sections_by_id{"A HTG 100-1"} // had been manually deleted
+    }
+  }
   rule cleanup {
     select when sections cleanup_requested
     foreach ent:sections_by_id setting(m,id)
