@@ -52,14 +52,14 @@ ruleset sections {
   rule recognizeDeletion {
     select when wrangler child_deleted
     pre {
+      m = event:attrs
+.klog("pico deleted")
       eci = event:attrs{"eci"}
-.klog("eci")
+      id = event:attrs{"name"}
     }
-  }
-  rule patch {
-    select when sections cleanup_requested
+    if id then noop()
     fired {
-      clear ent:sections_by_id{"A HTG 100-1"} // had been manually deleted
+      clear ent:sections_by_id{id}
     }
   }
   rule cleanup {
