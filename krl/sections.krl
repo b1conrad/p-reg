@@ -56,4 +56,11 @@ ruleset sections {
 .klog("eci")
     }
   }
+  rule cleanup {
+    select when sections cleanup_requested
+    foreach ent:sections_by_id setting(m,id)
+    fired {
+      raise wrangler event "child_deletion_request" attributes m
+    }
+  }
 }
