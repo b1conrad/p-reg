@@ -66,6 +66,7 @@ ruleset sections {
   }
   rule recognizeDeletion {
     select when wrangler child_deleted
+             or engine_ui del
     pre {
       m = event:attrs
 .klog("pico deleted")
