@@ -1,5 +1,6 @@
 ruleset sections {
   meta {
+    use module io.picolabs.wrangler alias wrangler
     shares sections_by_id
   }
   global {
@@ -82,6 +83,18 @@ ruleset sections {
     if id then noop()
     fired {
       clear ent:sections_by_id{id}
+    }
+  }
+  rule syncChildren {
+    select when sections sync_requested
+    foreach wrangler:children() setting(m)
+    pre {
+      id = m{"name"}
+      present_already = ent:sections_by_id >< id
+    }
+    if not present_already then noop()
+    fired {
+      ent:sections_by_id{id} := m
     }
   }
 }
