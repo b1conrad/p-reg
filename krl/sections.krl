@@ -1,10 +1,16 @@
 ruleset sections {
+  meta {
+    shares sections_by_id
+  }
   global {
     name_for_eci = function(eci){
       ent:sections_by_id
         .values()
         .filter(function(m){m{"eci"}==eci})
         {"name"}
+    }
+    sections_by_id = function(){
+      ent:sections_by_id
     }
   }
   rule initialize {
