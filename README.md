@@ -1,7 +1,7 @@
 # p-reg
 Priority registration simulation
 
-## Import the sections on offer
+## Import the first thousand sections on offer
 
 Followed the steps below to create the first 1,000 section picos, for the purpose of seeing if the rate of creation drops off dramatically after the first few hundred, as noticed in previous experiments of this type:
 
@@ -71,18 +71,19 @@ Followed the steps below to create the first 1,000 section picos, for the purpos
 ## Import all of the sections on offer
 
 Followed the steps below in a fresh pico engine to import all of the sections on offer. 
-Before doing the actual import, left the developer UI in the Testing tab for the "sections" pico, so that the event `sections:cleanup_requested` could be sent with a single mouse click.
+Before doing the actual import, left the developer UI in the Testing tab for the "p-reg" pico, so that the event `sections:cleanup_requested` could be sent with a single mouse click.
 
 1. Preparation: have git ignore `.pico-engine/` so that it would be possible to start a new pico engine instance using this local directory as home
-2. Start the pico engine, create a "sections" pico 
+2. Start the pico engine, create a "p-reg" pico 
 3. Using the developer UI, add a new channel, with ECI `cm1dlnxce000xpvs43w5218t9`
-4. Create input/batch file
+4. Using the developer UI, install the `sessions.krl` ruleset in the pico
+5. Create input/batch file
     ```
     $ cat ../registration/data/si\
      | sed "s+^.*$+curl -Gs localhost:3000/c/cm1…8t9/event/sections/init --data-urlencode 'line=&'; echo; date+"\
      >input/batch
     ```
-5. Run the import and convert the output into a comma-separated file showing number created per second
+6. Run the import and convert the output into a comma-separated file showing number created per second
     ```
     $ bash input/batch >input/timing
     $ grep Sep input/timing | wc
@@ -93,8 +94,8 @@ Before doing the actual import, left the developer UI in the Testing tab for the
      | sed "s/ MDT.*//"\
      | pbcopy 
     ```
-6. Paste into a spreadsheet and create a chart (see [p-reg import timing](https://docs.google.com/spreadsheets/d/1WneCOB4WB3V7uCeBmkd_rwDwEdflzE7HmZwL9rV6LYw/edit?usp=sharing))
-7. Try opening the developer UI: took about six minutes, and changing from one tab to another was sluggish
-8. Delete all the child picos (four didn’t get deleted!) and then the developer UI is again usable
+7. Paste into a spreadsheet and create a chart (see [p-reg import timing](https://docs.google.com/spreadsheets/d/1WneCOB4WB3V7uCeBmkd_rwDwEdflzE7HmZwL9rV6LYw/edit?usp=sharing))
+8. Try opening the developer UI: took about six minutes, and changing from one tab to another was sluggish
+9. Delete all the child picos (four didn’t get deleted!) and then the developer UI is again usable
 
 ## Perform all of the registration events
