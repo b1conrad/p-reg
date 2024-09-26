@@ -96,6 +96,27 @@ Before doing the actual import, left the developer UI in the Testing tab for the
     ```
 7. Paste into a spreadsheet and create a chart (see [p-reg import timing](https://docs.google.com/spreadsheets/d/1WneCOB4WB3V7uCeBmkd_rwDwEdflzE7HmZwL9rV6LYw/edit?usp=sharing))
 8. Try opening the developer UI: took about six minutes, and changing from one tab to another was sluggish
-9. Delete all the child picos (four didn’t get deleted!) and then the developer UI is again usable
+9. Delete all the child picos ([four didn’t get deleted!](https://github.com/b1conrad/p-reg/issues/3)) and then the developer UI is again usable
+
+### Repeat the import of all sections on offer
+
+The first time, all we did was create a child pico.
+This time, we sent the newly created pico an event to install a `section` ruleset, which captures the class size limit into an entity variable.
+
+1. Flushed the `sections` ruleset in the "p-reg" pico
+2. Repeated steps 6-9 of the previous, with very similar results (see tab "timing2" of [p-reg import timing](https://docs.google.com/spreadsheets/d/1WneCOB4WB3V7uCeBmkd_rwDwEdflzE7HmZwL9rV6LYw/edit?usp=sharing)),
+and timing the restart of the pico engine more carefully
+    ```
+    $ date # visit localhost:3000
+     Thu Sep 26 07:19:38 MDT 2024
+    $ ls -lrt .pico-engine/pico-engine.log
+     -rw-r--r--  1 bruceconrad  staff  16077025 Sep 26 07:22 .pico-engine/pico-engine.log
+    $ ls -lrt .pico-engine/pico-engine.log
+     -rw-r--r--  1 bruceconrad  staff  19233117 Sep 26 07:23 .pico-engine/pico-engine.log
+    $ date
+     Thu Sep 26 07:26:29 MDT 2024
+    ```
+4. The same four child picos were not actually deleted!
+
 
 ## Perform all of the registration events
