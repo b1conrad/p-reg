@@ -54,6 +54,17 @@ ruleset sections {
     }
   }
   rule installRulesetsInChild {
+    select when wrangler new_child_created
+      where event:attrs{"co_id"} == meta:rid
+    pre {
+      section_ruleset = {"absoluteURL":meta:rulesetURI,"rid":"section"}
+    }
+    event:send({"eci":event:attrs{"eci"},"eid":"install-ruleset",
+      "domain":"wrangler", "type":"install_ruleset_request",
+      "attrs":event:attrs.put(section_ruleset)
+    })
+  }
+  rule recordInitializedChild {
     select when wrangler child_initialized
       where event:attrs{"co_id"} == meta:rid
     pre {
